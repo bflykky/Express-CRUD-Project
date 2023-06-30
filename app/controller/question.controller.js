@@ -28,7 +28,7 @@ exports.create = (req, res)=>{
             result: "저장에 성공하였습니다."
           });
         }
-    })
+    });
 };
 
 // 전체 조회 
@@ -57,7 +57,7 @@ exports.findOne = (req,res)=>{
           });
         }
       } else {
-          res.send(data);
+          res.status(206).send(data);
       }
   });
 };
@@ -71,10 +71,7 @@ exports.update = (req, res)=>{
     });
   }
 
-  Question.updateById(
-    req.params.questionId,
-    new Question(req.body),
-    (err, data) => {
+  Question.updateById(req.params.questionId, new Question(req.body), (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
@@ -85,9 +82,13 @@ exports.update = (req, res)=>{
             message: "Error updating Question with id " + req.params.questionId
           });
         }
-      } else res.send(data);
-    }
-  );
+      } else {
+          console.log("===============");
+          console.log(data);
+          console.log("===============");
+          res.status(201).send(data);
+      }
+    });
 };
 
 // id로 삭제
@@ -103,18 +104,22 @@ exports.delete = (req, res)=>{
               message: "Could not delete Question with id " + req.params.questionId
             });
           }
-        } else res.send({ message: `Question was deleted successfully!` });
+        } else {
+          res.status(200).send({message: `Question was deleted successfully!`});
+        }
     });
 };
 
 // 전체 삭제
 exports.deleteAll = (req,res)=>{
     Question.removeAll((err, data) => {
-        if (err)
+        if (err) {
           res.status(500).send({
             message:
               err.message || "Some error occurred while removing all questions."
           });
-        else res.send({ message: `All Questions were deleted successfully!` });
+        } else {
+          res.status(200).send({ message: `All Questions were deleted successfully!` });
+        }
       });
 };
