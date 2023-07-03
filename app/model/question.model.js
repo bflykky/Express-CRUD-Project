@@ -24,8 +24,8 @@ Question.create = (newQuestion, result)=>{
 };
 
 // id 검색을 통한 특정 question read
-Question.findById = (questionID, result)=>{
-    sql.query("SELECT * FROM questions WHERE id = ?", questionID, (err, res)=>{
+Question.findById = (questionId, result)=>{
+    sql.query("SELECT * FROM questions WHERE id = ?", questionId, (err, res)=>{
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -52,7 +52,7 @@ Question.getAll = result=>{
             return;
         }
         
-        console.log("question: ", res);
+        console.log("questions: ", res);
         result(null, res);
     });
 };
@@ -113,12 +113,12 @@ Question.removeAll = result =>{
         }
 
         if (res.affectedRows == 0) {
-            // id 결과가 없을 시 
+            // 삭제할 튜플이 하나도 없는 경우 
             result({kind: "not_found"}, null);
             return;
         }
 
-        console.log('deleted ${res.affectedRows} questions');
+        console.log(`deleted ${res.affectedRows} questions`);
         result(null, res);
     });
 };

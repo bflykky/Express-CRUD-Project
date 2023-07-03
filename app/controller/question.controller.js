@@ -2,12 +2,12 @@ const Question = require("../model/question.model.js");
 
 // 새 객체 생성
 exports.create = (req, res)=>{
-    if(!req.body){
-        res.status(400).send({
-            message: "Content can not be empty!"
-        });
-    };
-
+    if(!req.body) {
+      res.status(400).send({
+          message: "Content can not be empty!"
+      });
+    }
+    
     const question = new Question({
         id: req.body.id,
         title: req.body.title,
@@ -15,13 +15,13 @@ exports.create = (req, res)=>{
         created: req.body.created,
         writer_id: req.body.writer_id
     });
-
+    
     // 데이터베이스에 저장
     Question.create(question, (err, data) =>{
         if (err) {
             res.status(500).send({
                 message:
-                err.message || "Some error occured while creating th Question."
+                err.message || "Some error occured while creating the question."
             });
         } else {
           res.status(201).json({
@@ -39,7 +39,7 @@ exports.findAll = (req, res)=>{
             message:
             err.message || "Some error occurred while retrieving questions."
           });
-        else res.send(data);
+        else res.status(206).send(data);
     });
 };
 
@@ -64,7 +64,7 @@ exports.findOne = (req,res)=>{
 
 // id로 갱신
 exports.update = (req, res)=>{
-    // Validate Request
+  // Validate Request
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
@@ -83,9 +83,6 @@ exports.update = (req, res)=>{
           });
         }
       } else {
-          console.log("===============");
-          console.log(data);
-          console.log("===============");
           res.status(201).send(data);
       }
     });
