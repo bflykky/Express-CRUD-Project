@@ -1,5 +1,24 @@
 const User = require("../model/user.model");
 
+exports.checkIdDuplication = (req, res, next) => {
+    User.getAll((err, data) => {
+        let userIdArr = [];
+        for (let user of data) {
+            console.log(user);
+            userIdArr.push(user.id);
+        }
+
+        if (userIdArr.includes(req.body.id) == true) {
+            console.log(`생성하려는 id ${req.body.id}를 다른 사용자가 사용하고 있어 중복됩니다.`);
+            // 에러를 던져서 에러 핸들러에서 send()하도록 해야 하나?
+            // throw new Error();
+            res.status(409).send({message: "생성하려는 아이디가 중복됩니다. 다시 입력해 주세요."});
+        } else {
+            next();
+        }
+    });
+};
+
 // 새 객체 생성
 exports.register = (req, res) => {
     if (!req.body) {
@@ -16,6 +35,13 @@ exports.register = (req, res) => {
     
     User.create(user, (err, data) => {
         if (err) {
+            /*
+            if (data != null) {
+                res.status(409).send({
+                    message: data
+                });
+            }
+            */
             res.status(500).send({
                 message: err.message || "Some error occured while creating the user."
             });

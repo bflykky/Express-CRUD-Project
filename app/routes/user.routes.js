@@ -3,7 +3,7 @@ const users = require("../controller/user.controller.js");
 var router = express.Router();
 
 // 회원 생성
-router.post("/join", users.register);
+router.post("/join", [users.checkIdDuplication, users.register]);
 
 // 전체 회원 조회
 router.get("/", users.findAll);
