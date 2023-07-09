@@ -115,20 +115,9 @@ class User {
             });
         });
     }
-    
-    // 콜백 함수라서, 입력 시 받은 파라미터를 전달해줄 방법이 마땅치 않음. 이를 고민해봐야 함.
-    static #checkIdDuplication(result, checkId) {
-        let userIdArr = [];
-        for (let column in result) {
-            userIdArr.push(column.id);
-        }
-
-        console.log("함수 실행중");
-        return userIdArr.includes(checkId);
-    }
 
     // verify the password of the User documment
-    static verify(password) {
+    verify(password) {
         return this.password === password;
     }
 }

@@ -19,6 +19,7 @@ app.set('view engine', 'jade');
 
 // JWT 웹 토큰 검증에 사용되는 비밀 키 set
 app.set('jwt-secret', authConfig.secretKey);
+app.set('jwt-validTime', authConfig.validTime);
 
 app.use(logger('dev'));
 app.use(express.json());
