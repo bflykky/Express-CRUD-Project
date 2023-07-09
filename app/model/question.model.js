@@ -21,7 +21,7 @@ class Question {
 
                 console.log(res);
 
-                console.log("Inserted question: ", {id: res.insertId, ...newQuestion});
+                console.log("Inserted question: ", {...newQuestion, id: res.insertId});
                 resolve(newQuestion);
             });
         });
@@ -34,16 +34,15 @@ class Question {
                 if (err) {
                     console.log("error: ", err);
                     reject(null);
+                    return;
                 }
 
                 if (res.length) {
                     console.log("found question: ", res[0]);
                     resolve(res[0]);
+                    return;
                 }
-                
-                // 해당 id를 가진 튜플 존재하지 않을 경우
-                // 질문. resolve, reject 함수를 호출했음에도 여기에 도달한다. 즉, 콜백 함수가 종료되지 않음. 왜?
-                console.log("==================44line입니다.==================");
+
                 resolve(undefined);
             });
         });
@@ -77,15 +76,12 @@ class Question {
                     // 입력받은 id를 가진 튜플이 없는 경우
                     resolve(undefined);
                 }
+
                 
-                console.log("update question: ", {id:id, ...question});
+                console.log("res:", res);
+                
+                console.log("update question: ", {id: id, ...question});
                 resolve(question);
-                /*
-                질문: 궁금한 점 2가지
-                1. {id: id, ...question} 해당 딕셔너리에서, question 객체는 id 멤버를 갖고 있다. 따라서 출력 시 id 키-값 쌍이 2번 출력되어야 한다고 생각했는데, 한 번만 출력된다. 이유는?
-                2. request 시 받는 데이터는 title과 content 뿐이다. 따라서, 해당 데이터를 제외한 나머지 question의 멤버 데이터들은 undefined로 console에 출력된다.
-                하지만, send() 시, title과 content만 전달될 뿐, undefined 데이터는 전달되지 않는다. undefined 데이터는 send() 시에 생략되는 것인가?
-                */
             });
         });
     }
@@ -132,4 +128,3 @@ class Question {
 }
 
 module.exports = Question;
-

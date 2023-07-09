@@ -12,11 +12,6 @@ exports.login = (req, res) => {
             throw new Error('아이디와 비밀번호 입력이 잘못되었습니다.');
         } else {
             // password 확인
-            
-            // user.verify()를 하게 되면, user를 nodejs 내에서 User 클래스로 인식하지 못함.
-            // 따라서 User 생성자를 통한 객체를 생성함.
-            // 참고: 클래스 내의 멤버 함수에 static을 붙일 경우, 인스턴스 객체에서도 해당 함수를 사용할 수 있는 Java와 달리,
-            // JS는 인스턴스 객체에서 static 멤버 함수를 호출할 수 없다.
             const tmpUser = new User(user);
             if(tmpUser.verify(password)) {
                 // create a promise that generates jwt asynchronously
